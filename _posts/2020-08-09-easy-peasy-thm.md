@@ -4,8 +4,6 @@ layout: post
 published: true
 ---
 
-Link to the machine : [https://tryhackme.com/room/easypeasyctf](https://tryhackme.com/room/easypeasyctf)
-
 Scanning this machine using NMAP `nmap -vv -oN nmap-basic IP`, doing this way, NMAP searches the top ports and gives a brief about the top ports present, in a way more faster manner, when compared with including all the flags. Then we can use flags on specific ports. - `nmap -sC -sV -vv -A -px,x,x -oN nmap-detailed IP` <br>
 On completion, NMAP gives 1 port open `80` and it seems to be running a ngnix web server.
 
@@ -216,3 +214,5 @@ After opening a listener in our machine, we run `crontab` in remote machine and 
 Voila! we get a flag, which was hidden in `.root.txt`!!
 
 Box Pwned!!
+
+Link to the machine : [https://tryhackme.com/room/easypeasyctf](https://tryhackme.com/room/easypeasyctf)
