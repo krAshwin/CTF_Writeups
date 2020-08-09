@@ -1,6 +1,7 @@
 ---
-layout: post
 title: Easy Peasy Walkthrough WriteUp
+layout: post
+published: true
 ---
 
 # Easy Peasy Walkthrough WriteUp
