@@ -7,3 +7,5 @@ github_username: krAshwin
 
 #build
 theme: jekyll-theme-hacker
+plugins:
+  - jekyll-paginate
