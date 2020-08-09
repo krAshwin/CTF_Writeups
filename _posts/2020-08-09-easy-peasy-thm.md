@@ -1,6 +1,6 @@
 ---
 title: Easy Peasy Walkthrough WriteUp
-layout: post
+layout: default
 published: true
 ---
 

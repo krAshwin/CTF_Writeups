@@ -1,7 +1,7 @@
-title: ctf-labs
+title: CTFLAbs
 description: "This is the home for WriteUps and Walkthroughs of Capture the flag events or similar boxes/machines."
 author:
-  name: "cardinal"
+  name: "krAshwin"
   email: "krashwin00@gmail.com"
   twitter_username: OkAshwin
 
@@ -27,5 +27,5 @@ plugins:
   - jekyll-paginate
 
 # Custom variables
-owner : "krAshwin"
+owner : "cardinal"
 year : "2020"
