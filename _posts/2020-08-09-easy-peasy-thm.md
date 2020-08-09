@@ -4,8 +4,6 @@ layout: post
 published: true
 ---
 
-# Easy Peasy Walkthrough WriteUp
-
 Link to the machine : [https://tryhackme.com/room/easypeasyctf](https://tryhackme.com/room/easypeasyctf)
 
 Scanning this machine using NMAP `nmap -vv -oN nmap-basic IP`, doing this way, NMAP searches the top ports and gives a brief about the top ports present, in a way more faster manner, when compared with including all the flags. Then we can use flags on specific ports. - `nmap -sC -sV -vv -A -px,x,x -oN nmap-detailed IP` <br>
