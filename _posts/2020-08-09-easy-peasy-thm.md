@@ -1,5 +1,5 @@
 ---
-title: Easy Peasy Walkthrough WriteUp
+title: "TryHackMe: Easy Peasy Walkthrough WriteUp"
 layout: default
 published: true
 ---
