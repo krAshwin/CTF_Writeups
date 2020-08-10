@@ -1,4 +1,8 @@
-# Recovery: TryHackMe Walkthrough
+---
+title: "TryHackMe: Recovery Walkthrough WriteUp"
+layout: default
+published: true
+---
 
 We are going this time for a machine with medium difficulty, it consists of challenges regarding malware analysis.
 
