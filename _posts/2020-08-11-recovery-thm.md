@@ -193,8 +193,5 @@ $ python3 xor-decrypt.py -i encrypted/reallyimportant.txt -o decrypted/reallyimp
 We can't send back using `scp` because we are using alex's account (non-root). So, we can use root shell, to wget the files from our system.
 
 And here we have the 5th flag!! Machine recovered!!
-<<<<<<< HEAD
-
+<br>
 Link to box: [https://tryhackme.com/room/recovery](https://tryhackme.com/room/recovery)
-=======
->>>>>>> 926e27fdac6a1b318db430dfd217aa5e2eb2df22
