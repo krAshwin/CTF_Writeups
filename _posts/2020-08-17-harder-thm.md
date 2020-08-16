@@ -263,4 +263,4 @@ And we get the key! There are a few concepts that are complicated but this one w
 
 Machine Pwned!
 
-Link: https://tryhackme.com/room/harder
+Link: [https://tryhackme.com/room/harder](https://tryhackme.com/room/harder)
