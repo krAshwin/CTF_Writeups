@@ -1,5 +1,4 @@
-# Harder - Real pentest findings combined - THM
-
+# Harder - Real pentest findings combined - TryHackMe Walkthrough
 We have an IP as usual, and we can start with the basic nmap scan - `nmap -oN nmap-basic -vv -p- IP`
 ```shell
 PORT      STATE    SERVICE        REASON      VERSION
