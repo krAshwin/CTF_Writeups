@@ -138,9 +138,10 @@ pwd.harder.local/index.php?n[]=0&h=e86f889ce1872bcb2d54e7145c1a4b4d85ee32fdf4223
 ```
 
 And after so much of struggle, we have something,
-|url                     |username     |password (cleartext)            |
-| --------------------- |:---------:|--------------------------------|
-|http://shell.harder.htb|     evs     |xxxxxxxxxxxxxxxxxxxxxxxxxx|
+* url: http://shell.harder.htb
+* username: evs
+* password (cleartext): xxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
 We have a new virtual host and a new set of credentials, let's add this host again into /etc/hosts and see what we have!
 The above creds don't work on the login page of `pwd.harder.local`, it must only work with the specified url, let's try that!
